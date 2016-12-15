@@ -1,0 +1,14 @@
+fruits:
+    resource: "@FruitsBundle/Resources/config/routing.yml"
+    prefix:   /
+
+app:
+    resource: "@AppBundle/Controller/"
+    type:     annotation
+
+user_registration:
+    path:     /register
+    defaults: { _controller: FruitsBundle:User:register }
+
+api_login_check:
+    path: /login_check

@@ -1,0 +1,29 @@
+{% extends 'base.html.twig' %}
+
+{% block body %}
+    <h1>Fruit</h1>
+
+    <table>
+        <tbody>
+            <tr>
+                <th>Id</th>
+                <td>{{ fruit.id }}</td>
+            </tr>
+            <tr>
+                <th>Fruit</th>
+                <td>{{ fruit.nomFruit }}</td>
+            </tr>
+            <tr>
+                <th>Quantité</th>
+                <td>{{ fruit.quantite }}</td>
+            </tr>
+        </tbody>
+    </table>
+
+    <a href="{{ path('fruits_index') }}" class="btn btn-default">Retour à la liste</a>
+    <a href="{{ path('fruits_edit', { 'id': fruit.id }) }}" class="btn btn-default">Modifier</a>
+    <br><br>
+            {{ form_start(delete_form) }}
+                <input type="submit" value="Supprimer" class="btn btn-default btn-delete">
+            {{ form_end(delete_form) }}
+{% endblock %}

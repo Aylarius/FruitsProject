@@ -1,0 +1,17 @@
+FruitsBundle\Entity\Fruits:
+    type: entity
+    table: null
+    repositoryClass: FruitsBundle\Repository\FruitsRepository
+    id:
+        id:
+            type: integer
+            id: true
+            generator:
+                strategy: AUTO
+    fields:
+        nomFruit:
+            type: string
+            length: 255
+        quantite:
+            type: integer
+    lifecycleCallbacks: {  }
