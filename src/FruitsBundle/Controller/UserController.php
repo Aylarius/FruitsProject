@@ -46,51 +46,88 @@ class UserController extends Controller
 
     public function loginAction(Request $request)
     {
+        $username = $request->request->get('username');
+        $password = $request->request->get('password');
+
+        $em = $this->getDoctrine()->getManager();
+        $user = $em->getRepository('FruitsBundle:User')->findOneBy(array('username' => $username));
+
+        if (!$user) {
+            throw $this->createNotFoundException();
+        }
+
+        // password check
+        if (!$this->get('security.password_encoder')->isPasswordValid($user, $password)) {
+            throw $this->createAccessDeniedException();
+        }
+
+        // Create JWT token with username
+        $token = $this->get('lexik_jwt_authentication.encoder')
+            ->encode(['username' => $user->getUsername()]);
+
+        // Return generated token
+        return new JsonResponse(['token' => $token]);
+
+    }
+
+    public function getAllAction()
+    {
+        // Get data from database
+        $em = $this->getDoctrine()->getManager();
+        $users = $em->getRepository('FruitsBundle:User')->findAll();
+
+        // Return as JSON
+        $users = $this->get('serializer')->serialize($users, 'json');
+        return new JsonResponse(json_decode($users));
+    }
+
+    public function getOneAction(User $user)
+    {
+        // Return as JSON
+        $user = $this->get('serializer')->serialize($user, 'json');
+        return new JsonResponse(json_decode($user));
+    }
+
+
+    public function editAction(Request $request, User $user)
+    {
         // Get data and decode JSON
         $data = json_decode(json_encode($request->request->all()), true);
 
-        if ($data) {
-            $username = ($data['username']);
-            $plainPassword = ($data['password']);
-
-            $em = $this->getDoctrine()->getManager();
-            $user = $em->getRepository('FruitsBundle:User')->findOneBy(array('username' => $username));
-
-
-            if (!$user) {
-                $error = "User not found";
-                $serializer = $this->get('serializer');
-                $response = $serializer->serialize($error, 'json');
-                return new JsonResponse(json_decode($response));
-
-            } else {
-                $encoder = $this->container->get('security.password_encoder');
-                $validPassword = $encoder->isPasswordValid(
-                    $user, // the user
-                    $plainPassword // the submitted password
-                );
-
-                if ($validPassword) {
-                    $token = new UsernamePasswordToken($user, null, "main", $user->getRoles());
-                    $this->get('security.token_storage')->setToken($token);
-                    $event = new InteractiveLoginEvent($request, $token);
-                    $this->get("event_dispatcher")->dispatch("security.interactive_login", $event);
-
-                    // Return as JSON
-                    $serializer = $this->get('serializer');
-                    $response = $serializer->serialize($user, 'json');
-                    return new JsonResponse(json_decode($response));
-
-                } else {
-                    $error = "Bad Password";
-                    $serializer = $this->get('serializer');
-                    $response = $serializer->serialize($error, 'json');
-                    return new JsonResponse(json_decode($response));
-                }
-            }
-
-        } else {
-            // No data
+        // Update data
+        if (isset($data['username'])) {
+            $user->setUsername($data['username']);
         }
+        if (isset($data['password'])) {
+            $user->setPassword($data['password']);
+        }
+        if (isset($data['email'])) {
+            $user->setEmail($data['email']);
+        }
+
+        // Get all data as JSON
+        $em = $this->getDoctrine()->getManager();
+        $em->persist($user);
+        $em->flush();
+
+        // Return as JSON
+        $user = $this->get('serializer')->serialize($user, 'json');
+        return new JsonResponse(json_decode($user));
     }
+
+
+    public function deleteAction(User $user)
+    {
+        // Delete from database
+        $em = $this->getDoctrine()->getManager();
+        $em->remove($user);
+        $em->flush();
+
+        // Return as JSON
+        $user = $this->get('serializer')->serialize($user, 'json');
+        return new JsonResponse(json_decode($user));
+    }
+
+
+
 }

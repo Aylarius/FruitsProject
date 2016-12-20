@@ -1,0 +1,30 @@
+user_index:
+    path:     /
+    defaults: { _controller: "FruitsBundle:User:getAll" }
+    methods:  GET
+
+user_show:
+    path:     /show/{id}
+    defaults: { _controller: "FruitsBundle:User:getOne" }
+    methods:  GET
+
+user_edit:
+    path:     /edit/{id}
+    defaults: { _controller: "FruitsBundle:User:edit" }
+    methods:  PUT
+
+user_delete:
+    path:     /delete/{id}
+    defaults: { _controller: "FruitsBundle:User:delete" }
+    methods:  DELETE
+
+user_registration:
+    path:     /register
+    defaults: { _controller: "FruitsBundle:User:register" }
+    methods:  POST
+
+user_login:
+    path:     /login
+    defaults: { _controller: "FruitsBundle:User:login" }
+    methods:  POST
+

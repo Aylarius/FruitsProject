@@ -1,31 +1,31 @@
 {% extends 'base.html.twig' %}
 
 {% block body %}
-    <h1>Liste des fruits</h1>
+    {% for fruit in fruits %}
+    <h1>Fruit</h1>
 
     <table>
-        <thead>
-            <tr>
-                <th>Id</th>
-                <th>Fruit</th>
-                <th>Quantité</th>
-                <th>Actions</th>
-            </tr>
-        </thead>
         <tbody>
-        {% for fruit in fruits %}
-            <tr>
-                <td><a href="{{ path('fruits_show', { 'id': fruit.id }) }}">{{ fruit.id }}</a></td>
-                <td>{{ fruit.nomFruit }}</td>
-                <td>{{ fruit.quantite }}</td>
-                <td>
-                    <a href="{{ path('fruits_show', { 'id': fruit.id }) }}" class="btn btn-default">Voir</a>
-                    <a href="{{ path('fruits_edit', { 'id': fruit.id }) }}" class="btn btn-default">Modifier</a>
-                </td>
-            </tr>
-        {% endfor %}
+        <tr>
+            <th>Id</th>
+            <td>{{ fruit.id }}</td>
+        </tr>
+        <tr>
+            <th>Fruit</th>
+            <td>{{ fruit.nomFruit }}</td>
+        </tr>
+        <tr>
+            <th>Quantité</th>
+            <td>{{ fruit.quantite }}</td>
+        </tr>
         </tbody>
     </table>
+{% endfor %}
 
-    <a href="{{ path('fruits_new') }}" class="btn btn-default btn-add">Ajouter un fruit</a>
+    <a href="{{ path('fruits_index') }}" class="btn btn-default">Retour à la liste</a>
+    <a href="{{ path('fruits_edit', { 'id': fruit.id }) }}" class="btn btn-default">Modifier</a>
+    <br><br>
+    {{ form_start(delete_form) }}
+    <input type="submit" value="Supprimer" class="btn btn-default btn-delete">
+    {{ form_end(delete_form) }}
 {% endblock %}

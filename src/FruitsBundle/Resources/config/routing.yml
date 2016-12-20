@@ -2,9 +2,6 @@ fruits_fruits:
     resource: "@FruitsBundle/Resources/config/routing/fruits.yml"
     prefix:   /fruits
 
-fruits_homepage:
-    path:     /
-    defaults: { _controller: FruitsBundle:Default:index }
-
-logout:
-    path: /logout
+fruits_user:
+    resource: "@FruitsBundle/Resources/config/routing/user.yml"
+    prefix:   /user

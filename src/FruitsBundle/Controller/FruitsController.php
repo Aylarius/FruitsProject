@@ -5,6 +5,10 @@ namespace FruitsBundle\Controller;
 use FruitsBundle\Entity\Fruits;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\HttpFoundation\JsonResponse;
+use Symfony\Component\Serializer\Serializer;
+
+
 
 /**
  * Fruit controller.
@@ -12,10 +16,95 @@ use Symfony\Component\HttpFoundation\Request;
  */
 class FruitsController extends Controller
 {
+    public function getAllAction()
+    {
+        // Get data from database
+        $em = $this->getDoctrine()->getManager();
+        $fruits = $em->getRepository('FruitsBundle:Fruits')->findAll();
+
+        // Return as JSON
+        $fruits = $this->get('serializer')->serialize($fruits, 'json');
+        return new JsonResponse(json_decode($fruits));
+    }
+
+
+    public function newAction(Request $request)
+    {
+        // Get data and decode JSON
+        $data = json_decode(json_encode($request->request->all()), true);
+
+        // Create new album entity
+        $fruit = new Fruits();
+        $fruit->setNomFruit($data['nomFruit']);
+        $fruit->setQuantite($data['quantite']);
+
+        // Send to database
+        $em = $this->getDoctrine()->getManager();
+        $em->persist($fruit);
+        $em->flush();
+
+        // Return as JSON
+        $serializer = $this->get('serializer');
+        $response = $serializer->serialize($data, 'json');
+        return new JsonResponse(json_decode($response));
+
+    }
+
+
+    public function getOneAction(Fruits $fruit)
+    {
+        // Return as JSON
+        $fruit = $this->get('serializer')->serialize($fruit, 'json');
+        return new JsonResponse(json_decode($fruit));
+    }
+
+
+    public function editAction(Request $request, Fruits $fruit)
+    {
+        // Get data and decode JSON
+        $data = json_decode(json_encode($request->request->all()), true);
+
+        // Update data
+        if (isset($data['nomFruit'])) {
+            $fruit->setNomFruit($data['nomFruit']);
+        }
+        if (isset($data['quantite'])) {
+            $fruit->setQuantite($data['quantite']);
+        }
+
+        // Get all data as JSON
+        $em = $this->getDoctrine()->getManager();
+        $em->persist($fruit);
+        $em->flush();
+
+        // Return as JSON
+        $fruit = $this->get('serializer')->serialize($fruit, 'json');
+        return new JsonResponse(json_decode($fruit));
+    }
+
+
+    public function deleteAction(Fruits $fruit)
+    {
+        // Delete from database
+        $em = $this->getDoctrine()->getManager();
+        $em->remove($fruit);
+        $em->flush($fruit);
+
+        // Return as JSON
+        $fruit = $this->get('serializer')->serialize($fruit, 'json');
+        return new JsonResponse(json_decode($fruit));
+    }
+
+
+
+
+
+
+
     /**
      * Lists all fruit entities.
      *
-     */
+
     public function indexAction()
     {
         $em = $this->getDoctrine()->getManager();
@@ -27,10 +116,7 @@ class FruitsController extends Controller
         ));
     }
 
-    /**
-     * Creates a new fruit entity.
-     *
-     */
+
     public function newAction(Request $request)
     {
         $fruit = new Fruits();
@@ -51,10 +137,7 @@ class FruitsController extends Controller
         ));
     }
 
-    /**
-     * Finds and displays a fruit entity.
-     *
-     */
+
     public function showAction(Fruits $fruit)
     {
         $deleteForm = $this->createDeleteForm($fruit);
@@ -65,10 +148,7 @@ class FruitsController extends Controller
         ));
     }
 
-    /**
-     * Displays a form to edit an existing fruit entity.
-     *
-     */
+
     public function editAction(Request $request, Fruits $fruit)
     {
         $deleteForm = $this->createDeleteForm($fruit);
@@ -88,10 +168,7 @@ class FruitsController extends Controller
         ));
     }
 
-    /**
-     * Deletes a fruit entity.
-     *
-     */
+
     public function deleteAction(Request $request, Fruits $fruit)
     {
         $form = $this->createDeleteForm($fruit);
@@ -106,13 +183,7 @@ class FruitsController extends Controller
         return $this->redirectToRoute('fruits_index');
     }
 
-    /**
-     * Creates a form to delete a fruit entity.
-     *
-     * @param Fruits $fruit The fruit entity
-     *
-     * @return \Symfony\Component\Form\Form The form
-     */
+
     private function createDeleteForm(Fruits $fruit)
     {
         return $this->createFormBuilder()
@@ -121,4 +192,6 @@ class FruitsController extends Controller
             ->getForm()
         ;
     }
+
+    */
 }

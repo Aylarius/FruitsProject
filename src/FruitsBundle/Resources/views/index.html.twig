@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html lang="en" ng-app='app'>
+<head>
+
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+
+    <link rel="shortcut icon" href="{{ asset('bundles/fruits/assets/img/logo.png') }}">
+
+    <title>MEAN Starter ES6</title>
+
+    <link rel="stylesheet" href="{{ asset('bundles/fruits/vendor/bootstrap/dist/css/bootstrap.min.css') }}">
+    <link rel="stylesheet" href="{{ asset('bundles/fruits/assets/css/style.css') }}">
+
+</head>
+<body>
+
+<ng-include src="'{{ asset('bundles/fruits/views/navbar.html') }}'"></ng-include>
+
+<div class="container">
+    <ng-view></ng-view>
+</div>
+
+<script src="{{ asset('bundles/fruits/vendor/jquery/dist/jquery.min.js') }}"></script>
+<script src="{{ asset('bundles/fruits/vendor/bootstrap/dist/js/bootstrap.min.js') }}"></script>
+
+<script src="{{ asset('bundles/fruits/vendor/angular/angular.min.js') }}"></script>
+<script src="{{ asset('bundles/fruits/vendor/angular-route/angular-route.min.js') }}"></script>
+
+<script src="{{ asset('bundles/fruits/js/factories/sessionFactory.js') }}"></script>
+
+<script src="{{ asset('bundles/fruits/js/services/userService.js') }}"></script>
+<script src="{{ asset('bundles/fruits/js/services/todoService.js') }}"></script>
+
+
+<script src="{{ asset('bundles/fruits/js/controllers/mainController.js') }}"></script>
+<script src="{{ asset('bundles/fruits/js/controllers/navbarController.js') }}"></script>
+<script src="{{ asset('bundles/fruits/js/controllers/loginController.js') }}"></script>
+
+<script src="{{ asset('bundles/fruits/js/routes.js') }}"></script>
+
+<script src="{{ asset('bundles/fruits/js/app.js') }}"></script>
+
+</body>
+
+
+
+</html>

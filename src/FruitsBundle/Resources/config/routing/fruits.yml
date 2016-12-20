@@ -1,24 +1,25 @@
-fruits_index:
+fruit_index:
     path:     /
-    defaults: { _controller: "FruitsBundle:Fruits:index" }
+    defaults: { _controller: "FruitsBundle:Fruits:getAll" }
     methods:  GET
 
-fruits_show:
-    path:     /{id}/show
-    defaults: { _controller: "FruitsBundle:Fruits:show" }
+fruit_show:
+    path:     /show/{id}
+    defaults: { _controller: "FruitsBundle:Fruits:getOne" }
     methods:  GET
 
-fruits_new:
+fruit_new:
     path:     /new
     defaults: { _controller: "FruitsBundle:Fruits:new" }
-    methods:  [GET, POST]
+    methods:  POST
 
-fruits_edit:
-    path:     /{id}/edit
+fruit_edit:
+    path:     /edit/{id}
     defaults: { _controller: "FruitsBundle:Fruits:edit" }
-    methods:  [GET, POST]
+    methods:  PUT
 
-fruits_delete:
-    path:     /{id}/delete
+fruit_delete:
+    path:     /delete/{id}
     defaults: { _controller: "FruitsBundle:Fruits:delete" }
     methods:  DELETE
+

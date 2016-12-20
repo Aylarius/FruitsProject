@@ -23,36 +23,21 @@ security:
             pattern: ^/(_(profiler|wdt)|css|images|js)/
             security: false
 
+
+        # Custom authentication firewall for all request thats starts from /api
+        fruits:
+            pattern: ^/fruits/(?!token)
+            guard:
+                authenticators:
+                    - app.jwt_token_authenticator
+
+        # Here you handle regular form authentication
         main:
             anonymous: ~
-            # activate different ways to authenticate
-
-            # http_basic: ~
-            # http://symfony.com/doc/current/security.html#a-configuring-how-your-users-will-authenticate
-
-            # form_login: ~
-            # http://symfony.com/doc/current/cookbook/security/form_login_setup.html
-
-            pattern:    ^/
-            http_basic: ~
-            provider: our_db_provider
-            form_login:
-                check_path: /login_check
-                username_parameter: username
-                password_parameter: password
-                success_handler: lexik_jwt_authentication.handler.authentication_success
-                failure_handler: lexik_jwt_authentication.handler.authentication_failure
-                require_previous_session: false
-            logout:
-                path:   /logout
-                target: /
-                invalidate_session: true
-                delete_cookies:
-                    a: { path: null, domain: null }
-                    b: { path: null, domain: null }
-
 
     access_control:
-        - { path: ^/register, roles: IS_AUTHENTICATED_ANONYMOUSLY }
-        - { path: ^/login, roles: IS_AUTHENTICATED_ANONYMOUSLY }
-        - { path: ^/, roles: IS_AUTHENTICATED_FULLY }
+        - { path: ^/user/register, roles: IS_AUTHENTICATED_ANONYMOUSLY }
+        - { path: ^/user/login, roles: IS_AUTHENTICATED_ANONYMOUSLY }
+        - { path: ^/, roles: IS_AUTHENTICATED_ANONYMOUSLY }
+        - { path: ^/fruits, roles: IS_AUTHENTICATED_FULLY }
+        - { path: ^/user, roles: IS_AUTHENTICATED_FULLY }
