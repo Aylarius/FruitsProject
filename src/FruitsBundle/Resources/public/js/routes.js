@@ -33,7 +33,7 @@ const routes = ($routeProvider, $httpProvider, $locationProvider) => {
             responseError(response) {
                 if (response.status === 401 || response.status === 403) {
                     $rootScope.$emit('loginStatusChanged', false);
-                    $location.path('/login')
+                    $location.path('/~thifainenoirault/Fruits/web/app_dev.php/user/login')
                 }
                 return $q.reject(response)
             }
@@ -59,7 +59,7 @@ const loginStatus = ($rootScope, $window, sessionFactory) => {
 const checkIsConnected = ($q, $http, $location, $window, $rootScope) => {
     let deferred = $q.defer()
 
-    $http.get('/api/loggedin').success(() => {
+    $http.get('/~thifainenoirault/Fruits/web/app_dev.php/user/loggedin').success(() => {
         $rootScope.$emit('loginStatusChanged', true);
         // Authenticated
         deferred.resolve()
@@ -69,7 +69,7 @@ const checkIsConnected = ($q, $http, $location, $window, $rootScope) => {
         $rootScope.$emit('loginStatusChanged', false);
         // Not Authenticated
         deferred.reject()
-        $location.url('/login')
+        $location.url('/~thifainenoirault/Fruits/web/app_dev.php/user/login')
     })
 
     return deferred.promise

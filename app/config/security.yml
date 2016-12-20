@@ -34,6 +34,9 @@ security:
         # Here you handle regular form authentication
         main:
             anonymous: ~
+            logout:
+                path:   /logout
+                target: /
 
     access_control:
         - { path: ^/user/register, roles: IS_AUTHENTICATED_ANONYMOUSLY }

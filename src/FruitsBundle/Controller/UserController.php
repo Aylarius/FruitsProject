@@ -70,6 +70,25 @@ class UserController extends Controller
 
     }
 
+    public function loggedinAction(Request $request)
+    {
+        if(!$request->headers->has('Authorization')) {
+            return new JsonResponse('Missing Header');
+        }
+
+        $authHeader = $request->headers->get('Authorization');
+        $headerParts = explode(' ', $authHeader);
+        $token = $headerParts[1];
+
+        $user = $this->get('security.token_storage')->getToken()->getUser();
+        if (false === $this->get('security.authorization_checker')->isGranted('ROLE_USER')) {
+            return new JsonResponse('Bad Token');
+        }
+
+        return new JsonResponse('OK');
+
+    }
+
     public function getAllAction()
     {
         // Get data from database

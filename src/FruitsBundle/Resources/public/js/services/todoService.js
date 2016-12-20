@@ -13,17 +13,17 @@ function todoService($http) {
     }
 
     this.getOne = (id) => {
-        return this.$http.get('/fruits/' + id + '/show')
+        return this.$http.get('/fruits/show/' + id)
     }
 
     this.update = (id, data) => {
-        return this.$http.put('/fruits/' + id + '/edit', {
+        return this.$http.put('/fruits/edit/' + id, {
             description: data
         })
     }
 
     this.delete = (id) => {
-        return this.$http.delete('/fruits/' + id + '/delete')
+        return this.$http.delete('/fruits/delete/' + id)
     }
 
 }

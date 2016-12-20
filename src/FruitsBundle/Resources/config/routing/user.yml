@@ -28,3 +28,7 @@ user_login:
     defaults: { _controller: "FruitsBundle:User:login" }
     methods:  POST
 
+user_loggedin:
+    path:     /loggedin
+    defaults: { _controller: "FruitsBundle:User:loggedin" }
+    methods:  POST

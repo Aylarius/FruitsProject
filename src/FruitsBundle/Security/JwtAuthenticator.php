@@ -41,7 +41,7 @@ class JwtAuthenticator extends AbstractGuardAuthenticator
 
         $extractor = new AuthorizationHeaderTokenExtractor(
             'Bearer',
-            'authorization'
+            'Authorization'
         );
 
         $token = $extractor->extract($request);
