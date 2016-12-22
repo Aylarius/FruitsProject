@@ -18,6 +18,7 @@ function loginController(userService, sessionFactory, $timeout, $location, $root
             this.loginMessage = null;
             this.$location.path('/');
         }).catch(() => {
+            console.log(res.data);
             this.sessionFactory.isLogged = false;
             this.$rootScope.$emit('loginStatusChanged', false);
             this.loginMessage = {};
