@@ -31,4 +31,8 @@ user_login:
 user_loggedin:
     path:     /loggedin
     defaults: { _controller: "FruitsBundle:User:loggedin" }
-    methods:  POST
+    methods:  GET
+
+user_logout:
+    path:     /logout
+    defaults: { _controller: "FruitsBundle:User:logout" }

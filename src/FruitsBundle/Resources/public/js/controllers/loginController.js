@@ -11,6 +11,7 @@ function loginController(userService, sessionFactory, $timeout, $location, $root
             username: this.username,
             password: this.password
         }).then((res) => {
+            +   console.log(res.data);
             this.sessionFactory.token = res.data.token;
             this.sessionFactory.isLogged = true;
             this.$rootScope.$emit('loginStatusChanged', true);

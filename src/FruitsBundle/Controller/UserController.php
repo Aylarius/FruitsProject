@@ -73,21 +73,38 @@ class UserController extends Controller
     public function loggedinAction(Request $request)
     {
         if(!$request->headers->has('Authorization')) {
-            return new JsonResponse('Missing Header');
+            $response = new JsonResponse();
+            $response->setStatusCode(JsonResponse::HTTP_FORBIDDEN);;
+            return $response;
         }
 
         $authHeader = $request->headers->get('Authorization');
         $headerParts = explode(' ', $authHeader);
-        $token = $headerParts[1];
+
+        $token = $headerParts[0];
 
         $user = $this->get('security.token_storage')->getToken()->getUser();
         if (false === $this->get('security.authorization_checker')->isGranted('ROLE_USER')) {
-            return new JsonResponse('Bad Token');
+            $response = new JsonResponse();
+            $response->setStatusCode(JsonResponse::HTTP_FORBIDDEN);;
+            return $response;
         }
-
-        return new JsonResponse('OK');
+        $response = new JsonResponse();
+        $response->setStatusCode(JsonResponse::HTTP_OK);;
+        return $response;
 
     }
+
+
+    public function logoutAction()
+    {
+        $this->container->get('security.token_storage')->setToken(null);
+        $response = new JsonResponse();
+        $response->setStatusCode(JsonResponse::HTTP_OK);;
+        return $response;
+
+    }
+
 
     public function getAllAction()
     {
