@@ -11,14 +11,14 @@ function loginController(userService, sessionFactory, $timeout, $location, $root
             username: this.username,
             password: this.password
         }).then((res) => {
-            console.log(1,res);
+            console.log(1,res.data);
             this.sessionFactory.token = res.data.token;
             this.sessionFactory.isLogged = true;
             this.$rootScope.$emit('loginStatusChanged', true);
             this.loginMessage = null;
             this.$location.path('/');
         }).catch((res) => {
-            console.log(2,res);
+            console.log(2,res.data);
             this.sessionFactory.isLogged = false;
             this.$rootScope.$emit('loginStatusChanged', false);
             this.loginMessage = {};
