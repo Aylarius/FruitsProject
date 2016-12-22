@@ -25,7 +25,6 @@ const routes = ($routeProvider, $httpProvider, $locationProvider) => {
                 config.headers = config.headers || {};
                 if ($window.localStorage.token) {
                     sessionFactory.token = $window.localStorage.token
-                    sessionFactory.user = JSON.parse($window.localStorage.getItem('currentUser'));
                     config.headers.authorization = $window.localStorage.token
                 }
                 return config
@@ -44,12 +43,7 @@ const routes = ($routeProvider, $httpProvider, $locationProvider) => {
 
 const loginStatus = ($rootScope, $window, sessionFactory) => {
 
-    if ($window.localStorage.currentUser) {
-        sessionFactory.user = JSON.parse($window.localStorage.getItem('currentUser'));
-    }
-
     $rootScope.$on('loginStatusChanged', (event, isLogged) => {
-        $window.localStorage.setItem('currentUser', JSON.stringify(sessionFactory.user));
         $window.localStorage.token = sessionFactory.token;
         sessionFactory.isLogged = isLogged;
     })
@@ -65,7 +59,6 @@ const checkIsConnected = ($q, $http, $location, $window, $rootScope) => {
         deferred.resolve()
     }).error(() => {
         $window.localStorage.removeItem('token');
-        $window.localStorage.removeItem('currentUser');
         $rootScope.$emit('loginStatusChanged', false);
         // Not Authenticated
         deferred.reject()
