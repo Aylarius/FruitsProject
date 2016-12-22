@@ -12,7 +12,6 @@ function loginController(userService, sessionFactory, $timeout, $location, $root
             password: this.password
         }).then((res) => {
             this.sessionFactory.token = res.data.token;
-            this.sessionFactory.user = res.data.user;
             this.sessionFactory.isLogged = true;
             this.$rootScope.$emit('loginStatusChanged', true);
             this.loginMessage = null;
@@ -33,7 +32,6 @@ function loginController(userService, sessionFactory, $timeout, $location, $root
             password: this.password
         }).then((res) => {
             this.sessionFactory.token = res.data.token;
-            this.sessionFactory.user = res.data.user;
             this.sessionFactory.isLogged = true;
             this.$rootScope.$emit('loginStatusChanged', true);
             this.loginMessage = {};
