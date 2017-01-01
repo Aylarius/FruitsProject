@@ -35,13 +35,13 @@ class JwtAuthenticator extends AbstractGuardAuthenticator
     public function getCredentials(Request $request)
     {
 
-        if(!$request->headers->has('Authorization')) {
+        if(!$request->headers->has('authorization')) {
             return;
         }
 
         $extractor = new AuthorizationHeaderTokenExtractor(
             'Bearer',
-            'Authorization'
+            'authorization'
         );
 
         $token = $extractor->extract($request);

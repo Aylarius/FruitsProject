@@ -26,10 +26,17 @@ security:
 
         # Custom authentication firewall for all request thats starts from /api
         fruits:
-            pattern: ^/fruits/(?!token)
+            pattern: ^/fruits/
             guard:
                 authenticators:
                     - app.jwt_token_authenticator
+
+        loggedin:
+            pattern: ^/user/loggedin
+            guard:
+                authenticators:
+                    - app.jwt_token_authenticator
+
 
         # Here you handle regular form authentication
         main:

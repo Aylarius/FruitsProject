@@ -13,6 +13,9 @@ use Symfony\Component\Security\Core\Authentication\Token\UsernamePasswordToken;
 use Symfony\Component\Security\Http\Event\InteractiveLoginEvent;
 use Symfony\Component\Security\Core\Exception\UsernameNotFoundException;
 use Symfony\Component\Security\Core\User\UserInterface;
+use FruitsBundle\Security\JwtAuthenticator;
+use Symfony\Component\HttpFoundation\Response;
+
 
 class UserController extends Controller
 {
@@ -46,8 +49,12 @@ class UserController extends Controller
 
     public function loginAction(Request $request)
     {
-        $username = $request->request->get('username');
-        $password = $request->request->get('password');
+        $test = $request->request->all();
+        reset($test);
+        $data = json_decode(key($test), true);
+
+        $username = $data['username'];
+        $password = $data['password'];
 
         $em = $this->getDoctrine()->getManager();
         $user = $em->getRepository('FruitsBundle:User')->findOneBy(array('username' => $username));
@@ -66,32 +73,13 @@ class UserController extends Controller
             ->encode(['username' => $user->getUsername()]);
 
         // Return generated token
-        return new JsonResponse(['token' => $token]);
+        return new JsonResponse(['token' => 'Bearer '.$token]);
 
     }
 
-    public function loggedinAction(Request $request)
+    public function loggedinAction()
     {
-        if(!$request->headers->has('Authorization')) {
-            $response = new JsonResponse();
-            $response->setStatusCode(JsonResponse::HTTP_FORBIDDEN);;
-            return $response;
-        }
-
-        $authHeader = $request->headers->get('Authorization');
-        $headerParts = explode(' ', $authHeader);
-
-        $token = $headerParts[0];
-
-        $user = $this->get('security.token_storage')->getToken()->getUser();
-        if (false === $this->get('security.authorization_checker')->isGranted('ROLE_USER')) {
-            $response = new JsonResponse();
-            $response->setStatusCode(JsonResponse::HTTP_FORBIDDEN);;
-            return $response;
-        }
-        $response = new JsonResponse();
-        $response->setStatusCode(JsonResponse::HTTP_OK);;
-        return $response;
+        return new Response();
 
     }
 
